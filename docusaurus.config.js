@@ -33,7 +33,7 @@ module.exports = {
         {to: 'blog', label: '算法', position: 'left'},
         // Please keep GitHub link to the right for consistency.
         {
-          href: 'https://Fangyiming.github.io/Majestys/Majestys',
+          href: 'https://github.com/FangyimingLode/FangyimingLode.github.io',
           label: 'Github',
           position: 'right',
         },

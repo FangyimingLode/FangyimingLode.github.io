@@ -14,5 +14,8 @@ module.exports = {
       "Basics/DOM",
       "Basics/BigOffer"
     ],
+    Webpack: [
+      "Webpack/webpack01"
+    ]
   },
 };

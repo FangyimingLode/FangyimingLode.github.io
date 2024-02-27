@@ -15,7 +15,16 @@ module.exports = {
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'FangyimingLode', // Usually your GitHub org/user name.
-  projectName: 'FangyimingLode.github.io', // Usually your repo name.
+  projectName: 'FangyimingLode.github.io',
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      ({
+        hashed: true,
+        language: ['en', 'zh']
+      })
+    ]
+  ],// Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'My Facebook Project',
@@ -42,12 +51,12 @@ module.exports = {
     prism: {
       additionalLanguages: ['powershell']
     },
-    algolia: {
-      apiKey: 'f60ff84a4b790371b51d9f69b5940f12',
-      indexName: 'dev_blog',
-      contextualSearch: true,
-      chunkSize: 5000
-    }
+    // algolia: {
+    //   apiKey: 'f60ff84a4b790371b51d9f69b5940f12',
+    //   indexName: 'dev_blog',
+    //   contextualSearch: true,
+    //   chunkSize: 5000
+    // }
   },
   presets: [
     [

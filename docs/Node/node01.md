@@ -71,7 +71,7 @@ const buf3 = Buffer.concat([buf2, buf3]);
 
 首先创建一个最基本的 http 服务，在浏览器地址栏输入 localhost:3000 就可以看到文字: hello world.
 
-🤔： 这里为什么是 response.end 的方法，如果是<code>response.body = 'abc'</code> 不是更加明显吗
+🤔： 这里为什么是 response.end 的方法，如果是`response.body = 'abc'` 不是更加明显吗
 
 ```js
 const http = require('http');
@@ -165,12 +165,12 @@ npm i commander download-git-repo ora handlebars figlet clear chalk open -s
 然后我们要在终端中使用，需要把Link本地的npm
 
 ``` shell
-npm link 
+npm link
 ```
 
 如果要在终端输入显示这样的结果，我们需要在 package.json 中注册以下，
 
-然后我们执行<code>sudo npm link</code>，成功我们在终端输入命令就会出现上面图中的结果
+然后我们执行`sudo npm link`，成功我们在终端输入命令就会出现上面图中的结果
 
 ```js
 #!/usr/bin/env node
@@ -272,8 +272,8 @@ module.exports.init = async name => {
   await spawn('cnpm', ['install', { cwd: `./${name}`}])
   log(chalk.green(`
   👌安装完成：To get Start:
-  ===========================    
-  cd ${name}    
+  ===========================
+  cd ${name}
   npm run serve
   ===========================
   `))
@@ -298,13 +298,13 @@ module.exports.init = async name => {
 
 - 代码模板渲染
   /lib/refresh.js
-  
+
   ```js
   const fs = require('fs');
   const handlebars = require('handlebars');
   module.exports = async () => {
   // 获取页面列表
-  const list = 
+  const list =
     fs.readdirSync('./src/views')
       .filter(v => v !== 'Home.vue')
       .map(v => ({
@@ -313,27 +313,29 @@ module.exports.init = async name => {
       }));
   // 生成路由定义
   compile({list}, './src/router.hs','./template/router.js')
-  
+
   // 生成菜单
-  
+
   compile({list}, './src/App.vue', './template/App.vue')
   }
   ```
-  
+
   ```js
   function compile(meta, filePath, templatePath) {
     if(fs.existsSync(templatePath)) {
-  
+
       const content = fs.readFileSync(templatePath).toString();
       const result = handlebars.compile(content)(meta);
       fs.writeFileSync(filePath, result);
-  
+
     }
     console.log(chalk.green('🚀${filePath} 创建成功'))
   }
 
   ```
+
 最后修改/bin/index.js里面的文件
+
 ```js
 program
   .command('refresh')

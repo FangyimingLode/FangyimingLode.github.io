@@ -81,14 +81,14 @@ Function.prototype.call1 = function(that = window) {
 }
 
 Function.prototype.apply1 = function (that = window) {
-    that.fn = this; 
+    that.fn = this;
     const args = arguments[1];
     const result = that.fn ? that.fn(args) : that.fn();
     delete that.fn;
     return result
 }
 
-const deepClone = (data) => {
+const deepClone1 = (data) => {
     if(typeof data === 'object') {
         const result = Array.isArray(data) ? []: {};
         for(let item in data) {
@@ -102,11 +102,62 @@ const deepClone = (data) => {
         return data
     }
 }
-let myWeakMap = new WeakWap()
-const deepClonePlus = (data) => {
-    if(data instanceof data === Object) {
-        if(myWeakMap.has(data)) {
-            return myWeakMap.get(data)
+
+function myNew (fn, ...arguments) {
+    let obj = Object.create(fn.prototype)
+    const result = fn.apply(args)
+    if(result && typeof result === 'function' || typeof result === 'object'){
+        return result
+    }
+    return obj
+}
+
+Function.prototype.call1 = function (that = window) {
+    that.fn = this;
+    const args = [...arguments].slice(1)
+    const result = that.fn(args);
+    delete that.fn
+    return result
+}
+
+// 节流
+
+function throttle (fn, wait) {
+    let pre = 0;
+    return function (args) {
+        let now = new Date();
+        if(pre - now > wait) {
+            pre = now
+            fn.apply(this, ...args)
         }
     }
+}
+
+// 防抖
+function debounce(fn, wait) {
+    let timer = null;
+    return function (args) {
+        if(timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            fn.apply(this, ...args)
+        }, wait)
+    }
+}
+
+// 数组去重
+
+function unique(arr) {
+  const reuslt = {};
+  arr.forEach((item, index) => {
+    if(!result[item]) {
+        result[item] = true
+    }
+  })
+  return Object.keys(result)
+}
+
+function unique(arr) {
+    return [...new Set(arr)]
 }

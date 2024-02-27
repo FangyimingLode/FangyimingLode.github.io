@@ -1,7 +1,6 @@
 ---
 id: webpack01
 title: webpack工程化实战
-
 ---
 
 ## Webpack入门
@@ -47,7 +46,8 @@ module.exports = {
 
 ## webpack核心概念
 
-Bundle <-- chunk <-- module
+> Bundle  chunk  module
+
 bundle有几个chunk  就是有几个eval
 
 - chunk: 代码块，一个chunk可能有多个模块组合而成，也用于代码合并与分割
@@ -56,7 +56,7 @@ bundle有几个chunk  就是有几个eval
 - output: output配置描述了webpack打包的输出配置，包含输出文件的命名，位置等信息
 - loader: 默认情况下，webpack仅支持js或者json文件通过loader，可以让他解析其他类型的文件充当翻译的角色，理论上只要有相应的loader，就可以处理任何类型的文件。
 - plugin: loader主要的职责就是让webpack认识更多的文件类型，而plugin的职责则是让其可以控制构建流程，从而执行一些特俗任务。插件的功能非常强大，可以完成各种 各样的任务。
-- mode: 4.0开始，webpack支持零配置，皆在开发人员减少上手难度同时加入mode的概念，用于指定打包的目标环境，一遍在打包过程中启用webpack针对不同的环境内置的优化 
+- mode: 4.0开始，webpack支持零配置，皆在开发人员减少上手难度同时加入mode的概念，用于指定打包的目标环境，一遍在打包过程中启用webpack针对不同的环境内置的优化
 
 ```js
 //  多页面应用
@@ -83,15 +83,12 @@ entry: [
 
 - 集成css样式处理:css-loader style-loader
 - 创建index.css
-  
-  ```console
-  npm instal style-loader css-loader -D 
-  ```
-  
-  ```js
-  
-  ```
 
+```console
+  npm instal style-loader css-loader -D
+```
+
+```js
 moudle: {
     rules: [
         {
@@ -100,17 +97,18 @@ moudle: {
         }
     ]
 }
-// 集成sass less
+```
 
-# sass
+### sass
 
 npm install node-sass sass-loader -D
 
-# less
+### less
 
 npm i
 npm install less less-loader -D
 
+```js
 module: {
     rules: [
         {
@@ -123,11 +121,11 @@ module: {
         }
     ]
 }
-
 ```
+
 - 集成postcss
   相当于babeljs
-  postcss 主要功能只有两个： 
+  postcss 主要功能只有两个：
   1. 把css解析成JS可以操作的抽象复发书AST
   2. 调用插件来处理AST并得到结果
 
@@ -141,4 +139,87 @@ module: {
 
 
 plugin 可以在webpack运行的某个阶段的时候，帮你做一下事情，类似生命周期的概念，扩展插件，在webpack构建流程中的特定实际注入扩展逻辑改变构建结果或者做你想要的事情
+```
+
+### 常用的分析工具
+
+1. 时间分析工具 speed-measure-webpack-plugin
+
+2. webpack-bundle-analyzer
+
+3. 构建结果分析工具 webpack-bunder-analyze
+
+### 优化 Webpack
+
+> 定向查找、减少执行构建、并行构建、并行压缩、合理使用缓存
+
+IngorePugin 国际化使用
+noParse JQ lodash
+exteranals  webpack 不需要打包那些文件
+html-webpack-externals-plugin 动态添加 CDN
+合理配置 loader 的 include、exclude
+
+```js
+//webpack.config.js
+const path = require('path');
+module.exports = {
+  //...
+  module: {
+    rules: [
+      {
+        test: /.jsx?$/,
+        use: ['babel-loader'],
+        include: [path.resolve(__dirname, 'src')]
+      }
+    ]
+  },
+}
+
+```
+
+并行构建
+Thread-loader
+并行压缩
+terser-webpack-plugin
+合理使用缓存
+babel-loader  cacheDirectory
+cache-loader
+webapck5 cache.type
+压缩代码
+html-webpack-plugin minify
+optimize-css-assets-webpack-plugin
+terser-webpack-plugin
+image-webpack-plugin
+
+代码分割
+splitchunksplugin
+
+```js
+module.exports = {
+  //...
+  optimization: {
+    splitChunks: {
+      chunks: 'async', // 值有 `all`,`async` 和 `initial`
+      minSize: 20000, // 生成 chunk 的最小体积（以 bytes 为单位）。
+      minRemainingSize: 0,
+      minChunks: 1, // 拆分前必须共享模块的最小 chunks 数。
+      maxAsyncRequests: 30, // 按需加载时的最大并行请求数。
+      maxInitialRequests: 30, // 入口点的最大并行请求数。
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\/]node_modules[\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+};
+
 ```

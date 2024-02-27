@@ -33,6 +33,7 @@ export const RouterContext = React.createContext();
 - Hooks相关API：函数组件获取history, location, params, match
 
 ## Router
+
 这是react-router核心组件之一，监听路由的变化,引起页面的刷新，达到切换地址更新组件渲染,
 
 思考🤔：为什么要在constructor里面监听呢？
@@ -51,7 +52,7 @@ export default class Router extends Component {
     return {path: '/', url: '/', params: {}, isExact: pathname === '/'}
     constructor(props)
       {
-        super(props) 
+        super(props)
         this.state = {
         location: props.history.location
         }
@@ -101,6 +102,7 @@ export default class BrowserRouter extends Component {
 
 }
 ```
+
 ## Link
 
 Link的本质就是一个a标签，目的是跳转地址和显示Link标签里面的内容, 注意如果这里不写点击事件，页面会出现闪烁，也就是a标签原生的事件，我们需要手动禁用，自己写跳转流程，主要是从context中去到history，把链接push进去
@@ -122,6 +124,7 @@ export default class Link extends Component {
   }
 }
 ```
+
 ## Route
 
 接收path和component，渲染组件是使用的React.createElement函数，切记 在Route中的component不能写成这样的形式
@@ -130,7 +133,7 @@ export default class Link extends Component {
 <Route component={() => xxxComponent}>
 ```
 
-这样在创建组件的时候，会导致页面不停的刷新，组件会不停的重复创建，当传递location发生变化，重新渲染组件 
+这样在创建组件的时候，会导致页面不停的刷新，组件会不停的重复创建，当传递location发生变化，重新渲染组件
 
 ```jsx
 export default class Route extends Component {
@@ -152,22 +155,22 @@ export default class Route extends Component {
 }
 ```
 
-这里使用<code>location.pathname === path</code>,判断的比较粗暴，源码当中使用正则进行校验，详细规则参考源码中的matchPath.js
+这里使用`location.pathname === path`,判断的比较粗暴，源码当中使用正则进行校验，详细规则参考源码中的matchPath.js
 
 Route组件中 我们可以传递render, children, component三个渲染组件的方法，他们的优先级是 children >component > render ，如果在组件当中谢了children是必须渲染的，component和render是匹配地址之后才会渲染，t在源码中 最后一个return 使用了三元表达式判断，到底渲染那个， 首先我们要注意的是children 他既可以是函数，也可以是节点 部分代码参考：
 
 ```jsx
 const props = {...context, match} // 这里传递是为了children组件可以获取到路由的相关方法
-return match ? 
-    (children ? 
-     (typeof children === 'function' ? children(props): children) 
+return match ?
+    (children ?
+     (typeof children === 'function' ? children(props): children)
      :(component ? (React.createElement(component, props)) : (render ? (render(props)):null)
      : (typeof children === 'function' ? children(props) : null): null
 ```
 
 ## Switch
 
-switch的是渲染地址匹配的第一个子节点<Route />  <Redirect />
+switch的是渲染地址匹配的第一个子节点`<Route />`  `<Redirect />`
 
 我们需要遍历switch中的内容，找到第一个匹配的
 
@@ -179,8 +182,8 @@ export default class Swtich extends Component {
     return (
       <RouterContext.Consumer>
       {
-      	context => {
-		  const location = context.location            
+       context => {
+          const location = context.location
           let match = undefined ;// 匹配的match
           let element = undefined; // 匹配的元素
           /* 找到第一个匹配的 React.Children 是react提供的api， 使用这个方法是因为
@@ -194,12 +197,12 @@ export default class Swtich extends Component {
               match = path ? matchPath(location.pathname, child.props) : context.match
             }
           })
-            
+
           return match ? React.cloneElement(element, {
-           computedMatch:   
+           computedMatch:
           }) : null
-        }         
-      }  
+        }
+      }
       </RouterContext.Consumer>
     )
   }
@@ -267,7 +270,7 @@ class LifeCycle extends Component {
 当路由表中使用render函数进行渲染的是，子组件不容易拿到history函数例如:
 
 ```jsx
-<Route render={() => <XXXcomponent />}></Route> 
+<Route render={() => <XXXcomponent />}></Route>
 // 虽然可以用传递参数的形势传递props，那么如果有嵌套每层都需要传递 withRouter就可以解决这个问题
 ```
 
@@ -278,10 +281,10 @@ withRouter是高阶组件的形势，然后传递history相关的api。
 ```jsx
 const withRouter = (Component) => props => {
   return (
-  	<RouterContext.Consumner>
-   	   {
+    <RouterContext.Consumner>
+       {
           context => <Component {...props} {...context} />
-       }  
+       }
     </RouterContext.Consumner>
   )
 }
@@ -292,12 +295,12 @@ const withRouter = (Component) => props => {
 ```jsx
 // Route部分代码
 return <RouterContext.Provider value={props}>
-    {match ? 
-    (children ? 
-     (typeof children === 'function' ? children(props): children) 
+    {match ?
+    (children ?
+     (typeof children === 'function' ? children(props): children)
      :(component ? (React.createElement(component, props)) : (render ? (render(props)):null)
      : (typeof children === 'function' ? children(props) : null)}
-		</RouterContext.Provider>
+  </RouterContext.Provider>
 ```
 
 以上就是实现react-router 的简单方法，有一些还需待优化，比如LifeCycle里面的生命周期，Redirect里面，
@@ -312,17 +315,16 @@ import {useContext} from 'react';
 import matchPath from './matchPath';
 
 export function useHistory() {
-    return useContext(RouterContext).history;
+  return useContext(RouterContext).history;
 }
 export function useLocation() {
-	return useContext(RouterContext).location;
+  return useContext(RouterContext).location;
 }
 export function useRouteMatch(){
-    return useContext(RouterContext).match;
+  return useContext(RouterContext).match;
 }
 export function useParams(){
-    const match = useContext(RouterContext).match;
-    return match ? match.params : {}
+  const match = useContext(RouterContext).match;
+  return match ? match.params : {}
 }
 ```
-

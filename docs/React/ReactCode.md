@@ -7,11 +7,12 @@ title: React原理分析
 
 ## 本次实现 createElement 和 render 函数
 
-
 createElement 主要接受以下几个参数
+
 - type 节点类型
 - config 节点的配置，如：事件，样式等等
 - children children属性，这里用一个数组去代替方便遍历
+
 ```js
 function createElement(type, config, ...children) {
   const props = {

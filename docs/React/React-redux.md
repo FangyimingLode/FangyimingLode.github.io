@@ -13,7 +13,6 @@ title: redux和React-redux
 - 中间件 applyMiddleware
 - bindActionCreators
   详细代码定点击下面按钮，
-  <br />
 
 [![Edit React-redux](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-redux-tnqgd?fontsize=14&hidenavigation=1&theme=dark)
 
@@ -76,7 +75,7 @@ export default class ReduxPage extends Component {
     return (
       <div>
         <h3> Redux Page</h3>
-        {/* 
+        {/*
         如果使用combineReducers 需要用到对用的对象的key获取
         */}
         <p>{store.getState().count}</p>
@@ -218,7 +217,7 @@ export const logger = ({dispatch, getState}) => {
     console.log('prev', prevStore)
     // 更新
     const current = next(action)
-    
+
     const currentStore = getState();
     console.log('current', currentStore)
 
@@ -286,7 +285,7 @@ const store = createStore(countReducer);
 
 ## Provider 和 connect
 
-React-Redux 提供<Provider />组件，能够使你的整个 app 访问到 Redux stroe 中的数据：
+React-Redux 提供 Provider 组件，能够使你的整个 app 访问到 Redux stroe 中的数据：
 
 ```js
 import React from "react";
@@ -307,13 +306,13 @@ ReactDOM.render(
 
 React-Redux 提供一个 connect 方法能够让你把组件和 store 连接起来。
 
-通常你可以以下面这种方式调用 connect 方法：<br />
-利用高阶组件的方式 ，这样组件中 props 就有了<br />
+通常你可以以下面这种方式调用 connect 方法：
+利用高阶组件的方式 ，这样组件中 props 就有了
 connect 参数主要有两个：mapStateToProps, mapDispatchToProps;
-<code>mapStateToProps</code>是一个函数用来返回所需要的 state<br />
-<code>mapDispatchToProps</code>可以是一个对象，也可以是一个函数，
+`mapStateToProps`是一个函数用来返回所需要的 state
+`mapDispatchToProps`可以是一个对象，也可以是一个函数，
 
-mapDispatchToProps 和 mapStateToProps 都有第二个参数<code>ownProps</code>，
+mapDispatchToProps 和 mapStateToProps 都有第二个参数`ownProps`，
 如果使用了的话，组要组件接收到新的 props，mapStateToProps 和 mapDisaptchToPropss 都会被重新计算，
 注意性能问题
 
@@ -324,8 +323,8 @@ import { bindActionCreators } from 'redux';
 // 这列的state 是全部的state
 @connect(
     state => {
-    	return {count: state.count}
-	  },
+     return {count: state.count}
+   },
     {
         add: () => ({type: 'ADD'}),
         minus: () => ({type: 'MINUS'})
@@ -395,4 +394,5 @@ function* loginSaga(){
   return takeEvery('LOGIN_SAGA', loginHandle)()
 }
 ```
+
 ·
